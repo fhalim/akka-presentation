@@ -17,4 +17,5 @@ include 'services:webservice'
 */
 
 include '01-HelloAkka'
+include '02-Supervision'
 rootProject.name = 'akka-examples'
