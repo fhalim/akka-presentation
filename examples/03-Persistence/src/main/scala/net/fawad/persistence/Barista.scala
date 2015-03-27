@@ -1,12 +1,15 @@
 package net.fawad.persistence
 
 import akka.actor.ActorLogging
+import akka.agent.Agent
 import akka.persistence.PersistentActor
 
 class Barista(id: String) extends PersistentActor with ActorLogging {
   override def persistenceId = id
 
-  var balance = 0
+  import scala.concurrent.ExecutionContext.Implicits.global
+
+  val balance = Agent(0)
 
   override def receiveCommand = {
     case OrderCoffee(order) =>
@@ -32,7 +35,9 @@ class Barista(id: String) extends PersistentActor with ActorLogging {
 
   def updateState(evt: PaidForCoffee) = evt match {
     case PaidForCoffee(customer, order, amount) =>
-      balance += amount
-      log.info("Balance is {}", balance)
+      balance send (_ + amount)
+      for (result <- balance.future()) {
+        log.info("Balance is {}", result)
+      }
   }
 }
