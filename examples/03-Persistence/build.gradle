@@ -1,0 +1,5 @@
+mainClassName = "net.fawad.persistence.Main"
+
+dependencies {
+    compile 'com.typesafe.akka:akka-persistence-experimental_2.11:2.3.9'
+}
