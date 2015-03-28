@@ -1,43 +1,26 @@
 package net.fawad.persistence
 
-import akka.actor.ActorLogging
-import akka.agent.Agent
-import akka.persistence.PersistentActor
+import akka.actor.{Actor, ActorLogging}
 
-class Barista(id: String) extends PersistentActor with ActorLogging {
-  override def persistenceId = id
 
-  import scala.concurrent.ExecutionContext.Implicits.global
-
-  val balance = Agent(0)
-
-  override def receiveCommand = {
+class Barista extends Actor with ActorLogging {
+  override def receive = {
     case OrderCoffee(order) =>
       log.info("Coffee ordered: {}", order)
-      self ! CoffeeOrdered(sender, order)
+      context.actorSelection("/user/barista") ! CoffeeOrdered(sender, order)
+      takeABreak()
     case PayForCoffee(order, amount) =>
-      persistAsync(PaidForCoffee(sender, order, amount))(self ! _)
+      context.actorSelection("/user/cashregister") ! AddMoney(amount)
+      sender ! "Thank you"
     case CoffeeOrdered(customer, order) =>
-      log.info("Making coffee!")
-      Thread.sleep(100)
-      self ! CoffeeMade(customer, order)
+      log.info("Making coffee {}!", order)
+      context.actorSelection("/user/barista") ! CoffeeMade(customer, order)
+      takeABreak()
     case CoffeeMade(customer, order) =>
       customer ! GiveCoffee(order)
-    case evt@PaidForCoffee(customer, order, amount) =>
-      log.info("Customer paid ${} for coffee.", amount, balance)
-      updateState(evt)
-      customer ! "Thank you"
+      takeABreak()
   }
-
-  override def receiveRecover = {
-    case evt@PaidForCoffee(customer, order, amount) => updateState(evt)
-  }
-
-  def updateState(evt: PaidForCoffee) = evt match {
-    case PaidForCoffee(customer, order, amount) =>
-      balance send (_ + amount)
-      for (result <- balance.future()) {
-        log.info("Balance is {}", result)
-      }
+  def takeABreak(): Unit ={
+    Thread.sleep(10)
   }
 }
