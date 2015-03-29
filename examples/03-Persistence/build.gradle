@@ -1,6 +1,6 @@
 mainClassName = "net.fawad.persistence.Main"
 
 dependencies {
-    compile 'com.typesafe.akka:akka-persistence-experimental_2.11:2.3.9'
-    compile 'com.typesafe.akka:akka-agent_2.11:2.3.9'
+    compile "com.typesafe.akka:akka-persistence-experimental_2.11:${akka_version}"
+    compile "com.typesafe.akka:akka-agent_2.11:${akka_version}"
 }

@@ -1,3 +1,5 @@
+ext.akka_version='2.3.9'
+
 subprojects {
     apply plugin: 'scala'
     apply plugin: 'application'
@@ -8,6 +10,11 @@ subprojects {
 
     dependencies {
         compile 'org.scala-lang:scala-library:2.11.6'
-        compile 'com.typesafe.akka:akka-actor_2.11:2.3.9'
+        compile "com.typesafe.akka:akka-actor_2.11:${akka_version}"
+    }
+
+    run{
+        standardInput = System.in
+        args System.getProperty("run.args").split()
     }
 }
