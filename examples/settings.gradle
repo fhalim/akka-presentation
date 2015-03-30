@@ -2,5 +2,6 @@ include '01-HelloAkka'
 include '02-Supervision'
 include '03-Persistence'
 include '04-Cluster'
+include '05-Http'
 
 rootProject.name = 'akka-examples'
