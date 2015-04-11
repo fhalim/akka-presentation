@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Going reactive with Akka</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="reveal.js/css/reveal.css">
+		<link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="reveal.js/lib/reveal.js/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="reveal.js/lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section data-markdown data-background="Akka_logo_transparent.png">
+					<script type="text/template">
+						## Going reactive with Akka
+
+						Fawad Halim
+
+						[fawad@fawad.net](mailto:fawad@fawad.net)
+
+						[@fawad](https://www.twitter.com/fawad)
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						# [Reactive Manifesto](http://www.reactivemanifesto.org/)
+
+						- Responsive
+						- Resilient
+						- Elastic
+						- Message Driven
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Responsive
+						- Focus on rapid and consistent response times
+						- Push based if possible
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Resilient
+						- Responsive on failure
+						- HA through Replication
+						- Isolation through failure containment
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Elastic
+
+						- Scale on demand
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Message Driven
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Actor Model
+						- Receive Messages
+						- Send messages
+						- Create actors
+						- Specify behavior for future
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Akka actors
+						- Embody actor model
+							- Act on messages
+							- Contain state for application
+							- Contain business logic
+							- Can change behavior based on stimuli (state machine)
+						- Enable resilience through supervision
+						- Communication async
+						- Elastic thru configuration
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Async communication
+						- Send async
+						- Work on one message at a time
+						- Mailbox per actor
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Supervision
+						- Actors watch others
+						- Form hierarchies of watchers
+						- One-for-one
+						- All-for-one
+						- Custom strategies
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Elasticity
+						- Amdahl's law
+						- No shared state
+						- Scale up using local dispatchers
+						- Scale out using clustering
+						- (Optionally) Configuration driven
+						- Pub/Sub support
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Actor Model (corollary)
+						- Communicate using messages
+						- Contain state
+						- Contain processing
+						- Can change behavior
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Other features
+						- Agents
+						- Location transparency
+						- Event Sourcing
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Reactive Streams
+						- Flow Control
+						- Back pressure
+						- Batching
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						## Conclusion
+					</script>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="reveal.js/lib/js/head.min.js"></script>
+		<script src="reveal.js/js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				//parallaxBackgroundImage: 'Akka_logo_transparent.png',
+				autoSlide: 120000,
+				transition: 'none', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+					{ src: 'reveal.js/plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
