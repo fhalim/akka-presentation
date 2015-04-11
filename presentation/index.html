@@ -15,7 +15,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
 		<link rel="stylesheet" href="reveal.js/css/reveal.css">
-		<link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">
+		<link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme">
 
 		<!-- Code syntax highlighting -->
 		<link rel="stylesheet" href="reveal.js/lib/reveal.js/css/zenburn.css">
@@ -53,7 +53,9 @@
 				</section>
 				<section data-markdown>
 					<script type="text/template">
-						# [Reactive Manifesto](http://www.reactivemanifesto.org/)
+						## Reactive Manifesto
+
+						[ReactiveManifesto.org](http://www.reactivemanifesto.org/)
 
 						- Responsive
 						- Resilient
@@ -66,6 +68,7 @@
 						## Responsive
 						- Focus on rapid and consistent response times
 						- Push based if possible
+						- Enables usability
 					</script>
 				</section>
 				<section data-markdown>
@@ -79,66 +82,67 @@
 				<section data-markdown>
 					<script type="text/template">
 						## Elastic
-
+						- Responsive under varying workload
 						- Scale on demand
 					</script>
 				</section>
 				<section data-markdown>
 					<script type="text/template">
 						## Message Driven
+						- Async message passing
+						- Loosely coupled components
 					</script>
 				</section>
-				<section data-markdown>
+				<section data-markdown data-background="http://downloadwindows8themes.com/wp-content/uploads/2013/12/bruce-lee-black-background.jpg">
 					<script type="text/template">
 						## Actor Model
-						- Receive Messages
-						- Send messages
+						- Communicate using messages
 						- Create actors
 						- Specify behavior for future
 					</script>
 				</section>
-				<section data-markdown>
-					<script type="text/template">
-						## Akka actors
-						- Embody actor model
-							- Act on messages
-							- Contain state for application
-							- Contain business logic
-							- Can change behavior based on stimuli (state machine)
-						- Enable resilience through supervision
-						- Communication async
-						- Elastic thru configuration
-					</script>
+				<section>
+					<section data-markdown>
+						<script type="text/template">
+							## Akka actors
+							- Embody actor model
+							- Resilience through supervision
+							- Async communication
+							- Elastic thru configuration
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Async communication
+							- Immutable messages
+							- Send async
+							- Work on one message at a time
+							- Mailbox per actor
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Supervision
+							- Actors watch others
+							- Form hierarchies of watchers
+							- One-for-one
+							- All-for-one
+							- Custom strategies
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Elasticity
+							- Amdahl's law
+							- No shared state
+							- Scale up using local dispatchers
+							- Scale out using clustering
+							- (Optionally) Configuration driven
+							- Pub/Sub support
+						</script>
+					</section>
 				</section>
-				<section data-markdown>
-					<script type="text/template">
-						## Async communication
-						- Send async
-						- Work on one message at a time
-						- Mailbox per actor
-					</script>
-				</section>
-				<section data-markdown>
-					<script type="text/template">
-						## Supervision
-						- Actors watch others
-						- Form hierarchies of watchers
-						- One-for-one
-						- All-for-one
-						- Custom strategies
-					</script>
-				</section>
-				<section data-markdown>
-					<script type="text/template">
-						## Elasticity
-						- Amdahl's law
-						- No shared state
-						- Scale up using local dispatchers
-						- Scale out using clustering
-						- (Optionally) Configuration driven
-						- Pub/Sub support
-					</script>
-				</section>
+
 				<section data-markdown>
 					<script type="text/template">
 						## Actor Model (corollary)
@@ -156,17 +160,45 @@
 						- Event Sourcing
 					</script>
 				</section>
-				<section data-markdown>
-					<script type="text/template">
-						## Reactive Streams
-						- Flow Control
-						- Back pressure
-						- Batching
-					</script>
+				<section>
+					<section data-markdown>
+						<script type="text/template">
+							## What's missing?
+							- Flow Control
+							- Back pressure
+							- Batching
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Reactive Streams
+
+							Implementations
+
+							- [Akka Streams](http://doc.akka.io/docs/akka-stream-and-http-experimental/1.0-M5/index.html)
+							- [Reactor](http://projectreactor.io/)
+							- [RxJava](http://reactivex.io/)
+							- [Vert.x](http://vertx.io/)
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Akka Streams
+							- HTTP
+							- Sockets
+							- Interop with Akka Actors
+						</script>
+					</section>
 				</section>
-				<section data-markdown>
+				<section data-markdown data-background="Akka_logo_transparent.png">
 					<script type="text/template">
 						## Conclusion
+						- Loose coupling: good
+						- Embrace failure
+
+						[fawad@fawad.net](mailto:fawad@fawad.net)
+
+						[@fawad](https://twitter.com/fawad)
 					</script>
 				</section>
 			</div>
@@ -184,17 +216,18 @@
 				controls: true,
 				progress: true,
 				history: true,
-				center: true,
+				center: false,
 				//parallaxBackgroundImage: 'Akka_logo_transparent.png',
-				autoSlide: 120000,
-				transition: 'none', // none/fade/slide/convex/concave/zoom
+				autoSlide: 90000,
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+				transitionSpeed: 'fast',
 
 				// Optional reveal.js plugins
 				dependencies: [
 					{ src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
 					{ src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 					{ src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); }},
 					{ src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
 					{ src: 'reveal.js/plugin/notes/notes.js', async: true }
 				]
