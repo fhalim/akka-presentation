@@ -15,10 +15,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
 		<link rel="stylesheet" href="reveal.js/css/reveal.css">
-		<link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme">
+		<link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">
 
 		<!-- Code syntax highlighting -->
-		<link rel="stylesheet" href="reveal.js/lib/reveal.js/css/zenburn.css">
+		<link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -51,47 +51,49 @@
 						[@fawad](https://www.twitter.com/fawad)
 					</script>
 				</section>
-				<section data-markdown>
-					<script type="text/template">
-						## Reactive Manifesto
+				<section>
+					<section data-markdown>
+						<script type="text/template">
+							## Reactive Manifesto
 
-						[ReactiveManifesto.org](http://www.reactivemanifesto.org/)
+							[ReactiveManifesto.org](http://www.reactivemanifesto.org/)
 
-						- Responsive
-						- Resilient
-						- Elastic
-						- Message Driven
-					</script>
-				</section>
-				<section data-markdown>
-					<script type="text/template">
-						## Responsive
-						- Focus on rapid and consistent response times
-						- Push based if possible
-						- Enables usability
-					</script>
-				</section>
-				<section data-markdown>
-					<script type="text/template">
-						## Resilient
-						- Responsive on failure
-						- HA through Replication
-						- Isolation through failure containment
-					</script>
-				</section>
-				<section data-markdown>
-					<script type="text/template">
-						## Elastic
-						- Responsive under varying workload
-						- Scale on demand
-					</script>
-				</section>
-				<section data-markdown>
-					<script type="text/template">
-						## Message Driven
-						- Async message passing
-						- Loosely coupled components
-					</script>
+							- Responsive
+							- Resilient
+							- Elastic
+							- Message Driven
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Reactive Manifesto :: Responsive
+							- Focus on rapid and consistent response times
+							- Push based if possible
+							- Enables usability
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Reactive Manifesto :: Resilient
+							- Responsive on failure
+							- HA through Replication
+							- Isolation through failure containment
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Reactive Manifesto :: Elastic
+							- Responsive under varying workload
+							- Scale on demand
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Reactive Manifesto :: Message Driven
+							- Async message passing
+							- Loosely coupled components
+						</script>
+					</section>
 				</section>
 				<section data-markdown data-background="http://downloadwindows8themes.com/wp-content/uploads/2013/12/bruce-lee-black-background.jpg">
 					<script type="text/template">
@@ -109,20 +111,36 @@
 							- Resilience through supervision
 							- Async communication
 							- Elastic thru configuration
+
+							```scala
+							val system = ActorSystem()
+							```
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-							## Async communication
+							## Akka actors :: Async communication
 							- Immutable messages
 							- Send async
 							- Work on one message at a time
 							- Mailbox per actor
+
+							```scala
+							class Greeter extends Actor {
+							  def receive = {
+							    case msg: String => println(s"Hello, ${msg}!")
+							  }
+							}
+
+							val greeter = system.actorOf(Props[Greeter])
+							greeter ! "world"
+
+							```
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
-							## Supervision
+							## Akka actors :: Supervision
 							- Actors watch others
 							- Form hierarchies of watchers
 							- One-for-one
@@ -130,35 +148,128 @@
 							- Custom strategies
 						</script>
 					</section>
+				</section>
+				<section>
 					<section data-markdown>
 						<script type="text/template">
-							## Elasticity
+							## Akka actors :: Elasticity
 							- Amdahl's law
 							- No shared state
-							- Scale up using local dispatchers
-							- Scale out using clustering
 							- (Optionally) Configuration driven
 							- Pub/Sub support
+
+							```apache
+							akka {
+								actor {
+									deployment {
+										/calculator/workers {
+											router = round-robin-pool
+											nr-of-instances = 5
+											}
+										}
+									}
+							}
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Elasticity :: Scale up
+							- Default Dispatcher
+							- Pinned Dispatcher
+							- Balancing dispatcher
+
+							```apache
+							akka {
+								actor {
+									deployment {
+										/calculator/workers {
+											router = round-robin-pool
+											nr-of-instances = 5
+											}
+										}
+									}
+							}
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Elasticity :: Scale out
+							- Cluster module
+							- Groups & Pools
+
+
+							```apache
+							akka {
+								actor {
+									deployment {
+										/calculator/workers {
+											router = round-robin-pool
+											nr-of-instances = 50
+											cluster {
+												enabled = on
+												allow-local-routees = on
+												max-nr-of-instances-per-node = 5
+											}
+										}
+									}
+								}
+							}
+							```
 						</script>
 					</section>
 				</section>
+				<section>
+					<section data-markdown>
+						<script type="text/template">
+							## Other features
+							- Agents
 
-				<section data-markdown>
-					<script type="text/template">
-						## Actor Model (corollary)
-						- Communicate using messages
-						- Contain state
-						- Contain processing
-						- Can change behavior
-					</script>
-				</section>
-				<section data-markdown>
-					<script type="text/template">
-						## Other features
-						- Agents
-						- Location transparency
-						- Event Sourcing
-					</script>
+							```scala
+							val hitCounter = Agent(0)
+							...
+
+							hitCounter send (_ + 1)
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Other features
+							- Location transparency
+
+							```scala
+							worker ! "Foo"
+							```
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Other features
+							- Event Sourcing
+
+							```scala
+
+							class CashRegister extends PersistentActor {
+							  override def persistenceId = "cashregister"
+
+							  val balance = Agent(0)
+							  override def receiveCommand = {
+							    case AddMoney(amount) =>
+							      persistAsync(MoneyAdded(amount))(self ! MoneyAdded(_))
+							  }
+
+							  override def receiveRecover = {
+							    case evt:MoneyAdded => updateState(evt)
+							  }
+
+							  def updateState(evt: MoneyAdded) = balance send (_ + evt.amount)
+							}
+
+							```
+						</script>
+					</section>
 				</section>
 				<section>
 					<section data-markdown>
@@ -167,6 +278,28 @@
 							- Flow Control
 							- Back pressure
 							- Batching
+						</script>
+					</section>
+					<section data-markdown>
+						<script type="text/template">
+							## Reactive Streams
+							```scala
+							trait Subscriber[T] {
+								def onSubscribe(s:Subscription)
+								def onNext(t:T)
+								def onError(t:Throwable)
+								def onComplete()
+							}
+
+							trait Publisher[-A] {
+								def subscribe(s:A)
+							}
+
+							trait Subscription {
+								def request(n:Long)
+								def cancel()
+							}
+							```
 						</script>
 					</section>
 					<section data-markdown>
@@ -195,6 +328,8 @@
 						## Conclusion
 						- Loose coupling: good
 						- Embrace failure
+
+						Demo time
 
 						[fawad@fawad.net](mailto:fawad@fawad.net)
 
