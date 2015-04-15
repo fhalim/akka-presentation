@@ -1,5 +1,6 @@
 mainClassName = 'net.fawad.http.Main'
 
 dependencies {
+    compile project(':03-Persistence')
     compile 'com.typesafe.akka:akka-http-experimental_2.11:1.0-M5'
 }

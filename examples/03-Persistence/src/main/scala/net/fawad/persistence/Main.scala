@@ -17,9 +17,7 @@ object Main extends App {
     val log = Logging(context.system, "customer")
     become {
       case GoOrderCoffee() => {
-        //for(idx <- 0 until 10 ){
           baristas ! OrderCoffee(CoffeeOrder(Random.nextInt(9) + 1))
-        //}
       }
       case GiveCoffee(order) =>
         log.info("Yaay, I haz coffee")

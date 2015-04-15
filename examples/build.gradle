@@ -15,6 +15,6 @@ subprojects {
 
     run {
         standardInput = System.in
-        args System.getProperty("run.args").split()
+//        args System.getProperty("run.args").split()
     }
 }
