@@ -49,6 +49,11 @@
 						[fawad@fawad.net](mailto:fawad@fawad.net)
 
 						[@fawad](https://www.twitter.com/fawad)
+
+						[GitHub repo for presentation](https://github.com/fhalim/akka-presentation)
+
+						Note:
+						Introduction to self. email and twitter
 					</script>
 				</section>
 				<section>
@@ -62,6 +67,20 @@
 							- Resilient
 							- Elastic
 							- Message Driven
+
+							![Tenets of Reactive Manifesto](http://www.reactivemanifesto.org/images/reactive-traits.svg)
+
+
+							Note:
+							Paradigm centered on dataflow/change propogation. Manifesto statement of beliefs about how to
+							achieve reactivity. Traits shared by scalable and reliable applications.
+
+							- Responsive: React to users
+							- Resilient: React to failure
+							- Elastic: React to load
+							- Message Driven: React to events
+
+							[Rationale for Reactive Manifesto](https://typesafe.com/blog/why_do_we_need_a_reactive_manifesto%3F)
 						</script>
 					</section>
 					<section data-markdown>
@@ -70,14 +89,31 @@
 							- Focus on rapid and consistent response times
 							- Push based if possible
 							- Enables usability
+
+
+							Note:
+							- Focus on responding to user in a timely manner.
+							- Low latency paramount.
+							- Consistent response time over throughput.
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
 							## Reactive Manifesto :: Resilient
-							- Responsive on failure
-							- HA through Replication
+							- Fail fast
+							- Error tolerant
 							- Isolation through failure containment
+
+							Note:
+							- Should be able to recover at all failure levels.
+							- Replication to provide failover
+							- Errors contained within components to prevent propogation
+							- Work delegated to other components
+							- Patterns
+								- Timeouts
+								- Bulkheads
+								- Circuit Breakers
+								- Handshaking
 						</script>
 					</section>
 					<section data-markdown>
@@ -85,6 +121,12 @@
 							## Reactive Manifesto :: Elastic
 							- Responsive under varying workload
 							- Scale on demand
+
+							Note:
+
+							- Avoid contention points/ shared resources
+							- Use predictive and reactive scaling algorithms
+							- Requires measurements at low levels
 						</script>
 					</section>
 					<section data-markdown>
@@ -92,6 +134,11 @@
 							## Reactive Manifesto :: Message Driven
 							- Async message passing
 							- Loosely coupled components
+
+							Note:
+							- Messages to communicate between components
+							- Loose coupling by definition
+							- No waiting for responses by default
 						</script>
 					</section>
 				</section>
@@ -101,6 +148,16 @@
 						- Communicate using messages
 						- Create actors
 						- Specify behavior for future
+
+						Note:
+						- Carl Hewitt 1973
+						- Espouses tenets of reactive programming. One way of enabling reactive systems
+						- Implementations
+							- Erlang
+							- Axum: Abandoned, but resulted in TPL Dataflow
+							- F#: MailboxProcessor. Very lightweight. Subset of functionality
+							- Orleans
+							- Scala: Built in, Akka.
 					</script>
 				</section>
 				<section>
@@ -115,6 +172,13 @@
 							```scala
 							val system = ActorSystem()
 							```
+
+							Note:
+
+							- Library based extension to Scala
+							- Coexists with standard Java/Scala code
+							- Hierarchical supervision by default. Explicit if needed.
+							- Uniform programming model decoupled from deployment
 						</script>
 					</section>
 					<section data-markdown>
@@ -136,6 +200,15 @@
 							greeter ! "world"
 
 							```
+
+							Note:
+
+							- Mailbox per logical actor. In-memory or persistant
+							- ActorRef instead of Actor
+							- Unbounded mailbox by default
+							- Send operation async.
+							- Messages immutable to avoid race conditions
+							- Patterns like ask, pipeTo
 						</script>
 					</section>
 					<section data-markdown>
@@ -146,6 +219,12 @@
 							- One-for-one
 							- All-for-one
 							- Custom strategies
+
+							Note:
+							- Hierarchical by default.
+							- Can decide how to deal
+							- Discard current message and continue by default
+							- Can come up with elaborate strategies.
 						</script>
 					</section>
 				</section>
@@ -158,18 +237,10 @@
 							- (Optionally) Configuration driven
 							- Pub/Sub support
 
-							```apache
-							akka {
-								actor {
-									deployment {
-										/calculator/workers {
-											router = round-robin-pool
-											nr-of-instances = 5
-											}
-										}
-									}
-							}
-							```
+							Note:
+							- Amdahl's Law describes max expected speedup through parallelism
+							- Asynchrony allows elasticity
+							- Configuration allows scaling components
 						</script>
 					</section>
 					<section data-markdown>
@@ -191,6 +262,13 @@
 									}
 							}
 							```
+
+							Note:
+							- Dispatcher by actor
+								- Default: ExecutorService, shared threadpool for actors
+								- Pinned: ThreadPollExecutor with dedicated thread per actor
+								- Balancing: Shared mailbox for actors with e.g. threadpool to themselves.
+								- CallingThread: for testing
 						</script>
 					</section>
 					<section data-markdown>
@@ -217,6 +295,15 @@
 								}
 							}
 							```
+
+							Note:
+							- Cluster module
+							- Netty for remoting
+							- Gossip based clustering
+							- Cluster nodes watch each other
+							- Pools for transparently creating/managing instances across cluster
+							- Groups for addressing actors explictly created on nodes
+							- Phi Accrual Failure Detector
 						</script>
 					</section>
 				</section>
@@ -232,6 +319,11 @@
 
 							hitCounter send (_ + 1)
 							```
+
+							Note:
+							- Actors for managing state
+							- Send computation to actors
+							- Leverage single-threadedness for concurrency
 						</script>
 					</section>
 					<section data-markdown>
@@ -242,6 +334,10 @@
 							```scala
 							worker ! "Foo"
 							```
+
+							Note:
+							- Local and remote actors treated uniformly.
+							- Scaling becomes deploy time concern
 						</script>
 					</section>
 					<section data-markdown>
@@ -268,6 +364,12 @@
 							}
 
 							```
+
+							Note:
+							- Modeling DDD aggregate roots
+							- Explictly persist events to recreate state later
+							- Pluggable persistence
+							- Eventuate for scaling out persistent actors (multi-master)
 						</script>
 					</section>
 				</section>
@@ -278,6 +380,11 @@
 							- Flow Control
 							- Back pressure
 							- Batching
+
+							Note:
+							- Important for resiliant systems
+							- Unbounded queues fail
+							- Backpressure allow correction from source
 						</script>
 					</section>
 					<section data-markdown>
@@ -291,8 +398,8 @@
 								def onComplete()
 							}
 
-							trait Publisher[-A] {
-								def subscribe(s:A)
+							trait Publisher[-T] {
+								def subscribe(s:Subscriber[T])
 							}
 
 							trait Subscription {
@@ -300,18 +407,30 @@
 								def cancel()
 							}
 							```
+
+							Note:
+							- Standardize demand based flow control.
 						</script>
 					</section>
 					<section data-markdown>
 						<script type="text/template">
 							## Reactive Streams
 
+							[ReactiveStreams.org](http://www.reactive-streams.org/)
+
 							Implementations
 
 							- [Akka Streams](http://doc.akka.io/docs/akka-stream-and-http-experimental/1.0-M5/index.html)
 							- [Reactor](http://projectreactor.io/)
-							- [RxJava](http://reactivex.io/)
+							- [RxJava](https://github.com/ReactiveX/RxJavaReactiveStreams)
 							- [Vert.x](http://vertx.io/)
+
+							Note:
+							- Akka Streams: Extension to Akka core. Includes flow DSL
+							- Reactor: From Spring
+							- RxJava: Java port of Rx. Added adapter for reactive streams
+							- Vert.x: Initially VMWare, now Eclipse. Single-Threaded, event driven for high throughput
+
 						</script>
 					</section>
 					<section data-markdown>
@@ -329,7 +448,7 @@
 						- Loose coupling: good
 						- Embrace failure
 
-						Demo time
+						Questions?
 
 						[fawad@fawad.net](mailto:fawad@fawad.net)
 
@@ -351,6 +470,7 @@
 				controls: true,
 				progress: true,
 				history: true,
+				mouseWheel: true,
 				center: false,
 				//parallaxBackgroundImage: 'Akka_logo_transparent.png',
 				autoSlide: 90000,
@@ -367,6 +487,16 @@
 					{ src: 'reveal.js/plugin/notes/notes.js', async: true }
 				]
 			});
+
+			// FH: from http://www.raymondcamden.com/2012/10/20/Adding-mouse-click-navigation-to-revealjs
+			window.addEventListener("mousedown", handleClick, false);
+			window.addEventListener("contextmenu", function(e) { e.preventDefault(); }, false);
+
+			function handleClick(e) {
+				e.preventDefault();
+				if(e.button === 0) Reveal.next();
+				if(e.button === 2) Reveal.prev();
+			}
 
 		</script>
 
