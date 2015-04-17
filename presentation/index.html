@@ -50,7 +50,7 @@
 
 						[@fawad](https://www.twitter.com/fawad)
 
-						[GitHub repo for presentation](https://github.com/fhalim/akka-presentation)
+						[github.com/fhalim/akka-presentation](https://github.com/fhalim/akka-presentation)
 
 						Note:
 						Introduction to self. email and twitter
@@ -62,11 +62,6 @@
 							## Reactive Manifesto
 
 							[ReactiveManifesto.org](http://www.reactivemanifesto.org/)
-
-							- Responsive
-							- Resilient
-							- Elastic
-							- Message Driven
 
 							![Tenets of Reactive Manifesto](http://www.reactivemanifesto.org/images/reactive-traits.svg)
 
@@ -145,6 +140,9 @@
 				<section data-markdown data-background="http://downloadwindows8themes.com/wp-content/uploads/2013/12/bruce-lee-black-background.jpg">
 					<script type="text/template">
 						## Actor Model
+
+						Actors
+
 						- Communicate using messages
 						- Create actors
 						- Specify behavior for future
@@ -179,6 +177,8 @@
 							- Coexists with standard Java/Scala code
 							- Hierarchical supervision by default. Explicit if needed.
 							- Uniform programming model decoupled from deployment
+
+							`ActorModel` logical container for everything to do with Akka actors.
 						</script>
 					</section>
 					<section data-markdown>
@@ -232,7 +232,6 @@
 					<section data-markdown>
 						<script type="text/template">
 							## Akka actors :: Elasticity
-							- Amdahl's law
 							- No shared state
 							- (Optionally) Configuration driven
 							- Pub/Sub support
@@ -324,20 +323,6 @@
 							- Actors for managing state
 							- Send computation to actors
 							- Leverage single-threadedness for concurrency
-						</script>
-					</section>
-					<section data-markdown>
-						<script type="text/template">
-							## Other features
-							- Location transparency
-
-							```scala
-							worker ! "Foo"
-							```
-
-							Note:
-							- Local and remote actors treated uniformly.
-							- Scaling becomes deploy time concern
 						</script>
 					</section>
 					<section data-markdown>
